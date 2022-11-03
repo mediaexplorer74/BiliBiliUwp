@@ -158,11 +158,18 @@ namespace BiliBili.UWP.Helper
                 {
                     return;
                 }
-                string results = await new NSDanmaku.Helper.DanmakuParse().GetBiliBili(Convert.ToInt64(cid));
+
+                //TODO
+                string results = "results";//await new NSDanmaku.Helper.DanmakuParse().GetBiliBili
+                //    (Convert.ToInt64(cid));
+                
                 //将弹幕存在在应用文件夹
                 //StorageFolder folder = ApplicationData.Current.LocalFolder;
                 //StorageFolder DowFolder = await KnownFolders.VideosLibrary.CreateFolderAsync("Bili-Download", CreationCollisionOption.OpenIfExists);
-                StorageFile fileWrite = await folder.CreateFileAsync(cid + ".xml", CreationCollisionOption.ReplaceExisting);
+                StorageFile fileWrite = 
+                    await folder.CreateFileAsync(cid + ".xml", 
+                    CreationCollisionOption.ReplaceExisting);
+                
                 await FileIO.WriteTextAsync(fileWrite, results);
             }
             catch (Exception)
@@ -175,7 +182,8 @@ namespace BiliBili.UWP.Helper
         {
             try
             {
-                string results = await new NSDanmaku.Helper.DanmakuParse().GetBiliBili(Convert.ToInt64(cid));
+                //TODO
+                string results = "results";//await new NSDanmaku.Helper.DanmakuParse().GetBiliBili(Convert.ToInt64(cid));
 
                 StorageFile fileWrite = await StorageFile.GetFileFromPathAsync(path);
                 await FileIO.WriteTextAsync(fileWrite, results);

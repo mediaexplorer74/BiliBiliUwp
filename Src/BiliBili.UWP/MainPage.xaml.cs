@@ -41,8 +41,6 @@ using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using static BiliBili.UWP.Helper.MusicHelper;
 
-//“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
-
 namespace BiliBili.UWP
 {
     public enum StartTypes
@@ -69,19 +67,21 @@ namespace BiliBili.UWP
     }
 
 
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
+   
     public sealed partial class MainPage : Page
     {
         public MainPage()
         {
             this.InitializeComponent();
+
             MusicHelper.InitializeMusicPlay();
+            
             music.Visibility = Visibility.Collapsed;
+            
             MusicHelper.MediaChanged += MusicHelper_MediaChanged;
             MusicHelper.DisplayEvent += MusicHelper_DisplayEvent;
             MusicHelper.UpdateList += MusicHelper_UpdateList1;
+            
             //ls_music.ItemsSource = MusicHelper.playList;
             musicplayer.SetMediaPlayer(MusicHelper._mediaPlayer);
             MessageCenter.NetworkError += MessageCenter_NetworkError;
@@ -89,7 +89,6 @@ namespace BiliBili.UWP
             SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
             DisplayInformation.GetForCurrentView().OrientationChanged += MainPage_OrientationChanged;
             Window.Current.Content.PointerPressed += MainPage_PointerEntered;
-
 
         }
       
@@ -196,19 +195,14 @@ namespace BiliBili.UWP
                                 {
                                     IsClicks = true;
                                     e.Handled = true;
-                                    Utils.ShowMessageToast("再按一次退出应用", 1500);
+                                    Utils.ShowMessageToast("Press again to exit the app", 1500);
                                     await Task.Delay(1500);
                                     IsClicks = false;
                                 }
                             }
                         }
-
                     }
                 }
-
-
-
-
             }
 
         }
@@ -217,17 +211,24 @@ namespace BiliBili.UWP
         private async void MainPage_OrientationChanged(DisplayInformation sender, object args)
         {
 
-            if (sender.CurrentOrientation == DisplayOrientations.Landscape || sender.CurrentOrientation == DisplayOrientations.LandscapeFlipped || sender.CurrentOrientation == (DisplayOrientations)5)
+            if 
+            (sender.CurrentOrientation == DisplayOrientations.Landscape 
+                || sender.CurrentOrientation == DisplayOrientations.LandscapeFlipped 
+                || sender.CurrentOrientation == (DisplayOrientations)5
+            )
             {
                 if (SettingHelper.Get_HideStatus())
                 {
-                    if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent(typeof(StatusBar).ToString()))
+                    if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent
+                    (
+                        typeof(StatusBar).ToString())
+                    )
                     {
-                        StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                        StatusBar statusBar = 
+                            Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
                         await statusBar.HideAsync();
                     }
                 }
-
             }
             else
             {
@@ -273,7 +274,7 @@ namespace BiliBili.UWP
                             {
                                 IsClicks = true;
                                 e.Handled = true;
-                                Utils.ShowMessageToast("再按一次退出应用", 1500);
+                                Utils.ShowMessageToast("Press again to exit the app", 1500);
                                 await Task.Delay(1500);
                                 IsClicks = false;
                             }
@@ -377,8 +378,8 @@ namespace BiliBili.UWP
                         {
                             ContentDialog contentDialog = new ContentDialog()
                             {
-                                PrimaryButtonText = "确定",
-                                Title = "不支持跳转的地址"
+                                PrimaryButtonText = "determine",
+                                Title = "Addresses that do not support jumping"
                             };
                             TextBlock textBlock = new TextBlock()
                             {
@@ -404,20 +405,21 @@ namespace BiliBili.UWP
                     IsTextSelectionEnabled = true,
                     TextWrapping = TextWrapping.Wrap
                 };
-                await new ContentDialog() { Content = tx, PrimaryButtonText = "知道了" }.ShowAsync();
+                await new ContentDialog() 
+                { 
+                    Content = tx, PrimaryButtonText = "Got it" 
+                }.ShowAsync();
 
 
                 SettingHelper.Set_First(false);
-
-
-
             }
 
 
             new AppHelper().GetDeveloperMessage();
 
             account = new Account();
-            //检查登录状态
+
+            //Check login status
             if (SettingHelper.Get_Access_key() != "")
             {
                 if ((await account.CheckLoginState(ApiHelper.access_key)).success)
@@ -431,7 +433,7 @@ namespace BiliBili.UWP
                     if (!data.success)
                     {
                         UserManage.Logout();
-                        Utils.ShowMessageToast("登录过期，请重新登录");
+                        Utils.ShowMessageToast("Login expired, please log in again");
                         await Utils.ShowLoginDialog();
                     }
                 }
@@ -455,13 +457,19 @@ namespace BiliBili.UWP
         {
             if (SettingHelper.Get_CustomBG() && SettingHelper.Get_BGPath().Length != 0)
             {
-                StorageFile file = await StorageFile.GetFileFromPathAsync(SettingHelper.Get_BGPath());
+                StorageFile file = 
+                    await StorageFile.GetFileFromPathAsync(SettingHelper.Get_BGPath());
+                
                 if (file != null)
                 {
-                    img_bg.Stretch = (Stretch)SettingHelper.Get_BGStretch();
-                    img_bg.HorizontalAlignment = (HorizontalAlignment)SettingHelper.Get__BGHor();
-                    img_bg.VerticalAlignment = (VerticalAlignment)SettingHelper.Get_BGVer();
-                    img_bg.Opacity = Convert.ToDouble(SettingHelper.Get_BGOpacity()) / 10;
+                    img_bg.Stretch = 
+                        (Stretch)SettingHelper.Get_BGStretch();
+                    img_bg.HorizontalAlignment = 
+                        (HorizontalAlignment)SettingHelper.Get__BGHor();
+                    img_bg.VerticalAlignment =
+                        (VerticalAlignment)SettingHelper.Get_BGVer();
+                    img_bg.Opacity = 
+                        Convert.ToDouble(SettingHelper.Get_BGOpacity()) / 10;
 
                     if (SettingHelper.Get_BGMaxWidth() != 0)
                     {
@@ -708,11 +716,9 @@ namespace BiliBili.UWP
             titleBar.InactiveBackgroundColor = ((SolidColorBrush)grid_Top.Background).Color;
             titleBar.ButtonInactiveBackgroundColor = ((SolidColorBrush)grid_Top.Background).Color;
         }
-        /// <summary>
-        /// 重新是否有新的信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+
+        // Check if is there any new information again?
         private async void Timer_Tick(object sender, object e)
         {
             //if (ApiHelper.IsLogin())
@@ -745,6 +751,7 @@ namespace BiliBili.UWP
                 {
                     return false;
                 }
+
                 // http://message.bilibili.com/api/msg/query.room.list.do?access_key=a36a84cc8ef4ea2f92c416951c859a25&actionKey=appkey&appkey=c1b107428d337928&build=414000&page_size=100&platform=android&ts=1461404884000&sign=5e212e424761aa497a75b0fb7fbde775
                 string url = string.Format("http://message.bilibili.com/api/notify/query.notify.count.do?_device=wp&_ulv=10000&access_key={0}&actionKey=appkey&appkey={1}&build=5250000&platform=android&ts={2}", ApiHelper.access_key, ApiHelper.AndroidKey.Appkey, ApiHelper.GetTimeSpan);
                 url += "&sign=" + ApiHelper.GetSign(url);
@@ -772,7 +779,7 @@ namespace BiliBili.UWP
             catch (Exception)
             {
                 return false;
-                //Utils.ShowMessageToast("读取通知失败", 3000);
+                //Utils.ShowMessageToast("Failed to read notification", 3000);
             }
         }
 
@@ -781,13 +788,15 @@ namespace BiliBili.UWP
 
             if (play_frame.CanGoBack)
             {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                    AppViewBackButtonVisibility.Visible;
             }
             else
             {
                 if (!frame.CanGoBack)
                 {
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Collapsed;
                 }
 
             }
@@ -799,19 +808,22 @@ namespace BiliBili.UWP
             {
 
                 case "Cn":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "国漫";
+                    txt_Header.Text = "Guoman";
                     break;
                 case "Jp":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "番剧";
+                    txt_Header.Text = "Fan Opera";
                     break;
                 case "Music":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "音频";
+                    txt_Header.Text = "Audio";
                     break;
                 default:
                     break;
@@ -823,26 +835,30 @@ namespace BiliBili.UWP
         {
             if (frame.CanGoBack)
             {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                    AppViewBackButtonVisibility.Visible;
             }
             else
             {
                 if (!play_frame.CanGoBack)
                 {
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Collapsed;
                 }
 
             }
 
             //if ((frame.Content as Page).Tag == null)
             //{
-            //    frame.Background = App.Current.Resources["Bili-Background"] as SolidColorBrush;
+            //    frame.Background = App.Current.Resources["Bili-Background"]
+            //    as SolidColorBrush;
             //    return;
             //}
 
             //if ((frame.Content as Page).Tag.ToString()!= "blank")
             //{
-            //    frame.Background = App.Current.Resources["Bili-Background"] as SolidColorBrush;
+            //    frame.Background = App.Current.Resources["Bili-Background"]
+            //    as SolidColorBrush;
             //}
             //else
             //{
@@ -856,24 +872,28 @@ namespace BiliBili.UWP
             {
 
                 case "Cn":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "国漫";
+                    txt_Header.Text = "Guoman";
                     break;
                 case "Jp":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "番剧";
+                    txt_Header.Text = "Fan Opera";
                     break;
                 case "Music":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "音频";
+                    txt_Header.Text = "audio";
                     break;
                 case "Article":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "专栏";
+                    txt_Header.Text = "column";
                     break;
                 default:
                     break;
@@ -896,65 +916,71 @@ namespace BiliBili.UWP
             {
                 return;
             }
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                AppViewBackButtonVisibility.Collapsed;
             Can_Nav = false;
             _InBangumi = false;
+            
             switch ((main_frame.Content as Page).Tag.ToString())
             {
-                case "首页":
+                case "Homepage":
                     menu_List.SelectedIndex = 0;
-                    txt_Header.Text = "首页";
+                    txt_Header.Text = "Homepage";
                     break;
-                case "频道":
+                case "channel":
                     menu_List.SelectedIndex = 1;
-                    txt_Header.Text = "频道";
+                    txt_Header.Text = "channel";
                     break;
-                case "直播":
+                case "Live broadcast":
                     menu_List.SelectedIndex = 2;
-                    txt_Header.Text = "直播";
+                    txt_Header.Text = "Live broadcast";
                     break;
-                case "番剧":
+                case "Fan Opera":
                     menu_List.SelectedIndex = 3;
 
-                    txt_Header.Text = "番剧";
+                    txt_Header.Text = "Fan Opera";
                     break;
-                case "动态":
+                case "dynamic":
                     menu_List.SelectedIndex = 4;
 
                     //menu_List.SelectedIndex = 3;
                     //bottom.SelectedIndex = 3;
-                    txt_Header.Text = "动态";
+                    txt_Header.Text = "dynamic";
                     break;
-                case "发现":
+                case "discover":
                     menu_List.SelectedIndex = 5;
 
                     //menu_List.SelectedIndex = 4;
                     //bottom.SelectedIndex = 4;
-                    txt_Header.Text = "发现";
+                    txt_Header.Text = "discover";
                     break;
-                case "设置":
+                case "Set up":
                     menu_List.SelectedIndex = 6;
-                    txt_Header.Text = "设置";
+                    txt_Header.Text = "Set up";
                     break;
                 case "Cn":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "国漫";
+                    txt_Header.Text = "Guoman";
                     break;
                 case "Jp":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "番剧";
+                    txt_Header.Text = "Fan Opera";
                     break;
                 case "Music":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "音频";
+                    txt_Header.Text = "audio";
                     break;
                 case "Article":
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                        AppViewBackButtonVisibility.Visible;
                     _InBangumi = true;
-                    txt_Header.Text = "专栏";
+                    txt_Header.Text = "column";
                     break;
                 default:
                     break;
@@ -986,38 +1012,38 @@ namespace BiliBili.UWP
                     //    (main_frame.Content as ChannelPage).OpenVideo += MainPage_OpenVideo; 
                     //    Reg_OpenVideo = true;
                     //}
-                    txt_Header.Text = "首页";
+                    txt_Header.Text = "Homepage";
                     break;
                 case 1:
                     main_frame.Navigate(typeof(ChannelPage));
 
-                    txt_Header.Text = "频道";
+                    txt_Header.Text = "channel";
                     break;
                 case 2:
                     main_frame.Navigate(typeof(LiveV2Page));
 
-                    txt_Header.Text = "直播";
+                    txt_Header.Text = "Live broadcast";
                     break;
                 case 3:
                     main_frame.Navigate(typeof(BangumiPage));
 
-                    txt_Header.Text = "番剧";
+                    txt_Header.Text = "Fan Opera";
                     break;
 
                 case 4:
                     main_frame.Navigate(typeof(AttentionPage));
 
-                    txt_Header.Text = "动态";
+                    txt_Header.Text = "dynamic";
                     break;
                 case 5:
                     main_frame.Navigate(typeof(FindPage));
 
-                    txt_Header.Text = "发现";
+                    txt_Header.Text = "discover";
                     break;
                 //case 4:
                 //    main_frame.Navigate(typeof(SettingPage));
 
-                //    txt_Header.Text = "设置";
+                //    txt_Header.Text = "Set up";
                 //    break;
                 default:
                     break;
@@ -1054,7 +1080,11 @@ namespace BiliBili.UWP
         private void btn_user_myvip_Click(object sender, RoutedEventArgs e)
         {
             //http://big.bilibili.com/site/big.html
-            frame.Navigate(typeof(WebPage), new object[] { "https://big.bilibili.com/mobile/home" });
+            frame.Navigate(typeof(WebPage), new object[] 
+            { 
+                "https://big.bilibili.com/mobile/home" 
+            });
+
             fy.Hide();
         }
 
@@ -1078,20 +1108,26 @@ namespace BiliBili.UWP
 
         private void dtzz_Click(object sender, RoutedEventArgs e)
         {
-            frame.Navigate(typeof(WebPage), "https://account.bilibili.com/answer/base");
+            frame.Navigate(typeof(WebPage), 
+                "https://account.bilibili.com/answer/base");
+            
             fy.Hide();
         }
 
         private void btn_UserInfo_Click(object sender, RoutedEventArgs e)
         {
-            frame.Navigate(typeof(UserCenterPage),ApiHelper.GetUserId());
+            frame.Navigate(typeof(UserCenterPage),
+                ApiHelper.GetUserId());
+            
             fy.Hide();
         }
 
         private void btn_user_myGuanzhu_Click(object sender, RoutedEventArgs e)
         {
-            MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(WebPage), "https://space.bilibili.com/h5/follow");
+            MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(WebPage), 
+                "https://space.bilibili.com/h5/follow");
             //frame.Navigate(typeof(UserInfoPage), new object[] { null, 2 });
+
             fy.Hide();
         }
 
@@ -1107,12 +1143,16 @@ namespace BiliBili.UWP
 
             //var info = gv_user.DataContext as UserInfoModel;
 
-            frame.Navigate(typeof(MyQrPage), new object[] { new MyqrModel() {
+            frame.Navigate(typeof(MyQrPage), new object[] 
+            { 
+                new MyqrModel() 
+                {
                   name=Account.myInfo.name,
                   photo=Account.myInfo.face,
                   qr="http://space.bilibili.com/"+ApiHelper.GetUserId(),
                   sex=Account.myInfo.Sex
-            } });
+                } 
+            });
             fy.Hide();
         }
 
@@ -1134,7 +1174,7 @@ namespace BiliBili.UWP
             {
                 if (!ApiHelper.IsLogin() && !await Utils.ShowLoginDialog())
                 {
-                    Utils.ShowMessageToast("请先登录");
+                    Utils.ShowMessageToast("Please log in first");
                     return;
                 }
                 MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(ToViewPage));
@@ -1192,14 +1232,14 @@ namespace BiliBili.UWP
 
         private void piv_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
-
+            //
         }
 
         private void btn_user_moviecollect_Click(object sender, RoutedEventArgs e)
         {
             MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(FollowSeasonPage), Modules.SeasonType.cinema);
+            
             fy.Hide();
-
         }
 
         private void btn_ClearMedia_Click(object sender, RoutedEventArgs e)
@@ -1219,7 +1259,11 @@ namespace BiliBili.UWP
         private void btn_showMusicInfo_Click(object sender, RoutedEventArgs e)
         {
 
-            MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(MusicInfoPage), (sender as AppBarButton).Tag.ToString());
+            MessageCenter.SendNavigateTo
+            (
+                NavigateMode.Info, 
+                typeof(MusicInfoPage), 
+                (sender as AppBarButton).Tag.ToString());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -1263,7 +1307,7 @@ namespace BiliBili.UWP
 
         private void btn_Test_Click(object sender, RoutedEventArgs e)
         {
-
+            //
         }
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -1277,7 +1321,8 @@ namespace BiliBili.UWP
             }
             return base.MeasureOverride(availableSize);
         }
-        //设置宅布局
+
+        //Set the house layout
         private void SetNarrowUI()
         {
             grid_o.BorderThickness = new Thickness(0, 0, 1, 0);
@@ -1288,7 +1333,8 @@ namespace BiliBili.UWP
             btn_OpenMenu.Visibility = Visibility.Visible;
             SetOneColumn();
         }
-        //设置宽布局
+
+        //Set a wide layout
         private void SetWideUI()
         {
             grid_o.BorderThickness = new Thickness(0, 0, 1, 0);
@@ -1297,7 +1343,10 @@ namespace BiliBili.UWP
             Grid.SetColumn(frame,1);
             bg.Visibility = Visibility.Visible;
             btn_OpenMenu.Visibility = Visibility.Visible;
-            if (frame.CurrentSourcePageType == typeof(BlankPage)&&main_frame.CurrentSourcePageType==typeof(HomePage))
+            if 
+            (frame.CurrentSourcePageType == 
+                typeof(BlankPage)&&main_frame.CurrentSourcePageType==typeof(HomePage)
+            )
             {
                 if (SettingHelper.Get_ColunmHome())
                 {
@@ -1313,14 +1362,18 @@ namespace BiliBili.UWP
                 SetTwoColumn();
             }
         }
-        //显示双列
+
+
+        //Display dual columns
         private void SetTwoColumn()
         {
             column_left.MaxWidth = 500;
             column_left.Width = new GridLength(1, GridUnitType.Star);
             column_right.Width = new GridLength(1, GridUnitType.Star);
         }
-        //显示单列
+
+
+        //Display single column
         private void SetOneColumn()
         {
             column_left.MaxWidth = double.MaxValue;
@@ -1351,6 +1404,8 @@ namespace BiliBili.UWP
                 }
             }
         }
+
+
         private void main_frame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             if (this.ActualWidth >= 800)
@@ -1379,7 +1434,13 @@ namespace BiliBili.UWP
 
         private void btn_user_seasoncollect_Click(object sender, RoutedEventArgs e)
         {
-            MessageCenter.SendNavigateTo(NavigateMode.Info, typeof(FollowSeasonPage), Modules.SeasonType.bangumi);
+            MessageCenter.SendNavigateTo
+            (
+                NavigateMode.Info, 
+                typeof(FollowSeasonPage), 
+                Modules.SeasonType.bangumi
+            );
+            
             fy.Hide();
         }
     }

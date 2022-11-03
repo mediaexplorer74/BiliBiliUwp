@@ -142,11 +142,14 @@
 
                 </vlc:MediaElement>
 
-                <danmu:Danmaku x:Name="danmu"
+                <!--
+                sizeZoom="{Binding ElementName=slider_DanmuSize,Path=Value,Mode=OneWay}"
+                speed="{Binding ElementName=slider_DanmuSpeed,Path=Value,Mode=OneWay}"  
+                -->
+                    <danmu:Danmaku x:Name="danmu"
                                Opacity="{Binding ElementName=slider_DanmuTran,Path=Value,Mode=OneWay}"
-                               sizeZoom="{Binding ElementName=slider_DanmuSize,Path=Value,Mode=OneWay}"
-                               speed="{Binding ElementName=slider_DanmuSpeed,Path=Value,Mode=OneWay}"
-                               >
+                                    
+                                                            >
                 </danmu:Danmaku>
 
                 <Border x:Name="Debug_Data" Padding="12" Visibility="Collapsed" Width="200" VerticalAlignment="Center" Background="#4C000000">

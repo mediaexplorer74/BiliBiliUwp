@@ -19,7 +19,8 @@ using BiliBili.UWP.Helper;
 using System.Text.RegularExpressions;
 using BiliBili.UWP.Modules.AccountModels;
 using System.Threading.Tasks;
-using System.Timers;
+using System.Threading;
+//using System.Timers;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
@@ -276,7 +277,7 @@ namespace BiliBili.UWP.Controls
                 qr_loading = true;
                 if (timer != null)
                 {
-                    timer.Stop();
+                    //timer.Stop();
                     timer.Dispose();
                 }
                 var result = await account.GetQRAuthInfo();
@@ -293,10 +294,12 @@ namespace BiliBili.UWP.Controls
                     };
                     var img = barcodeWriter.Write(authInfo.url);
                     imgQR.Source = img;
-                    timer = new Timer();
-                    timer.Interval = 3000;
-                    timer.Elapsed += Timer_Elapsed;
-                    timer.Start();
+                    //timer = new Timer();
+                    //timer.Interval = 3000;
+                    //timer.Elapsed += Timer_Elapsed;
+                    //timer.Start();
+
+                    timer = new Timer(null,null,3000,3000);
                 }
                 else
                 {
@@ -312,7 +315,7 @@ namespace BiliBili.UWP.Controls
 
         }
 
-        private async void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        private async void Timer_Elapsed(object sender)//, ElapsedEventArgs e)
         {
 
             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
@@ -321,7 +324,8 @@ namespace BiliBili.UWP.Controls
                     var result = await account.PollQRAuthInfo(authInfo.auth_code);
                     if (result.status == Modules.LoginStatus.Success)
                     {
-                        timer.Stop();
+                        //RnD
+                        timer.Dispose();//.Stop();
                         this.Hide();
                     }
                 });

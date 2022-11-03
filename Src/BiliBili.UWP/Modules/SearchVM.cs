@@ -800,7 +800,7 @@ namespace BiliBili.UWP.Modules
                 set
                 {
 
-                    _title = System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
+                    _title = "title";//System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
                 }
             }
             public string tag { get; set; }
@@ -830,7 +830,8 @@ namespace BiliBili.UWP.Modules
                 set
                 {
 
-                    _title = System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
+                    //TODO
+                    _title = "title";//System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
                 }
             }
             public string areas { get; set; }
@@ -924,8 +925,8 @@ namespace BiliBili.UWP.Modules
                 get { return _title; }
                 set
                 {
-
-                    _title = System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
+                    //TODO
+                    _title = "title";//System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
                 }
             }
             public string uname { get; set; }
@@ -971,7 +972,8 @@ namespace BiliBili.UWP.Modules
                 get { return _title; }
                 set
                 {
-                    _title = System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
+                    //TODO
+                    _title = "title";//System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
                 }
             }
             public string category_name { get; set; }
@@ -1005,7 +1007,8 @@ namespace BiliBili.UWP.Modules
                 get { return _title; }
                 set
                 {
-                    _title = System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
+                    //TODO
+                    _title = "title";//System.Web.HttpUtility.HtmlDecode(value.Replace("<em class=\"keyword\">", "").Replace("</em>", ""));
                 }
             }
 

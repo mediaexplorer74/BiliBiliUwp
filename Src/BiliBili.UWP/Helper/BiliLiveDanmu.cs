@@ -178,7 +178,7 @@ namespace BiliBili.UWP.Helper
                                     else
                                         outBuffer.Write(block, 0, bytesRead);
                                 }
-                                compressedzipStream.Close();
+                                compressedzipStream.Dispose();//.Close();
                                 buffer = outBuffer.ToArray();
                             }
                         }
